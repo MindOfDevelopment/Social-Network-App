@@ -1,12 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const routes = require("./routes");
 
 const app = express();
 
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use(routes);
 
 // DB Connection
 const mongoUri = process.env.MONGO_URI;
