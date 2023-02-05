@@ -31,10 +31,14 @@ module.exports = {
   async updateUserById(req, res) {
     try {
       const { email, username } = req.body;
-      const user = await User.findByIdAndUpdate(req.params.id, {
-        email,
-        username,
-      });
+      const user = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          email,
+          username,
+        },
+        { new: true }
+      );
       return await res.json(user);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -50,9 +54,13 @@ module.exports = {
   },
   async addFriendById(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.userId, {
-        $set: { friends: params.friendId },
-      });
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $set: { friends: req.params.friendId },
+        },
+        { new: true }
+      );
       return await res.json(user);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -60,9 +68,13 @@ module.exports = {
   },
   async deleteFriendById(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.userId, {
-        $pull: { friends: params.friendId },
-      });
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $pull: { friends: req.params.friendId },
+        },
+        { new: true }
+      );
       return await res.json(user);
     } catch (error) {
       res.status(500).json({ message: error.message });

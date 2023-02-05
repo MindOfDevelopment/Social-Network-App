@@ -1,4 +1,5 @@
 const { Thought, User } = require("../models");
+const { reactionSchema } = require("../models/thought");
 
 module.exports = {
   async getAllThoughts(req, res) {
@@ -40,7 +41,7 @@ module.exports = {
           thoughtText,
           username,
         },
-        { runValidators: true }
+        { runValidators: true, new: true }
       );
       return await res.json(thought);
     } catch (error) {
@@ -61,7 +62,7 @@ module.exports = {
       const updated = await Thought.findByIdAndUpdate(
         req.params.thoughtId,
         {
-          $set: { reactions: { reactionBody, username } },
+          $set: { reactions: new reactionSchema({ reactionBody, username }) },
         },
         { runValidators: true }
       );
