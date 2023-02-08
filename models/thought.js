@@ -61,4 +61,4 @@ thoughtSchema.virtual("reactionCount").get(function () {
 });
 
 // exports.reactionSchema = this.reactionSchema;
-module.exports = { Thought, reactionShema };
+module.exports = Thought;

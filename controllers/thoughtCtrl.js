@@ -1,5 +1,5 @@
 const { Thought, User } = require("../models");
-const { reactionSchema } = require("../models/thought");
+const { Types } = require("mongoose");
 
 module.exports = {
   async getAllThoughts(req, res) {
@@ -59,13 +59,13 @@ module.exports = {
   async addReaction(req, res) {
     try {
       const { reactionBody, username } = req.body;
-      const updated = await Thought.findByIdAndUpdate(
-        req.params.thoughtId,
-        {
-          $set: { reactions: new reactionSchema({ reactionBody, username }) },
-        },
-        { runValidators: true }
-      );
+      const foundThought = await Thought.findOne({ _id: req.params.thoughtId });
+      foundThought.reactions.push({
+        reactionBody,
+        username,
+        reactionId: new Types.ObjectId(),
+      });
+      const updated = await foundThought.save();
       return await res.status(201).json(updated);
     } catch (error) {
       res.status(500).json({ message: error.message });
